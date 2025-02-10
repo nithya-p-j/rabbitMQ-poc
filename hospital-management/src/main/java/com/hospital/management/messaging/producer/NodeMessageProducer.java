@@ -22,7 +22,7 @@ public class NodeMessageProducer {
     public void sendCreateMessage(NodeMessage nodeMessage) {
         log.info("Sending create nodeMessage...{}", nodeMessage);
         rabbitTemplate.convertAndSend(MessagingConfiguration.EXCHANGE_NAME, MessagingConfiguration.CREATE_ROUTING_KEY,
-                nodeMessage);
+                nodeMessage); // converts the nodeMessage Object using Jackson2JsonMessageConverter
     }
 
     public void sendDeleteMessage(NodeMessage nodeMessage) {

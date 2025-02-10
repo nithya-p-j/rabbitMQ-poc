@@ -2,6 +2,9 @@ package com.hospital.management.model.request;
 
 import lombok.Data;
 
+/**
+ * Request to add a hospital node
+ */
 @Data
 public class HospitalNodeRequest {
 

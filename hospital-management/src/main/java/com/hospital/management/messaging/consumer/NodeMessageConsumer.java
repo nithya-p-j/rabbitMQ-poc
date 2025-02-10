@@ -24,13 +24,14 @@ public class NodeMessageConsumer {
      * Listens to CREATE node operation
      * throws {@link AmqpRejectAndDontRequeueException}
      */
-    @RabbitListener(queues = MessagingConfiguration.CREATE_QUEUE_NAME, concurrency = "3-5")
+    @RabbitListener(queues = MessagingConfiguration.CREATE_QUEUE_NAME, concurrency = "3-5") // 3-5 concurrent consumers.
     public void receiveCreateMessage(NodeMessage nodeMessage) {
         try {
             log.info("Received create node nodeMessage: " + nodeMessage);
             saveMessageLog(nodeMessage);
         } catch (Exception e) {
-            throw new AmqpRejectAndDontRequeueException("Create message failed...", e);
+            throw new AmqpRejectAndDontRequeueException("Create message failed...",
+                    e); //reject the message and send to dlq
         }
     }
 
@@ -48,6 +49,9 @@ public class NodeMessageConsumer {
         }
     }
 
+    /**
+     * Consumed messages are logged in db for auditing
+     */
     private void saveMessageLog(NodeMessage nodeMessage) {
         MessageLog messageLog = new MessageLog();
         messageLog.setOperation(nodeMessage.getOperation());
